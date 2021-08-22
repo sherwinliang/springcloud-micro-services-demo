@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: eureka-server
+---
+spring:
+  profiles: server1
+eureka:
+  instance:
+    hostname: localhost1
+  client:
+    service-url:
+      defaultZone:  http://localhost2:9091/eureka
+    register-with-eureka: true
+    fetch-registry: true
+server:
+  port: 9090
+---
+spring:
+  profiles: server2
+eureka:
+  instance:
+    hostname: localhost2
+  client:
+    service-url:
+      defaultZone:  http://localhost1:9090/eureka
+    register-with-eureka: true
+    fetch-registry: true
+server:
+  port: 9091

@@ -1,0 +1,20 @@
+server:
+  port: 7070
+spring:
+  application:
+    name: micro-services-provider
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost1:9090/eureka,http://localhost2:9091/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:1.0-SNAPSHOT
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [info, health, mapping]
