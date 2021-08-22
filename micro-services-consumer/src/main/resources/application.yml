@@ -1,0 +1,43 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: micro-services-consumer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost1:9090/eureka,http://localhost2:9091/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:  '*'
+
+zuul:
+  routes:
+    # 设置服务路径名称 随便起
+    services-provider:
+      path: /provider/**
+      # 服务的注册名字，即服务提供方的spring.application.name
+      serviceId: micro-services-provider
+    #services-provider1:
+      #path: /provider1/**
+      #serviceId: micro-services-provider1
+  host:
+    connect-timeout-millis: 3000
+    socket-timeout-millis: 10000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
